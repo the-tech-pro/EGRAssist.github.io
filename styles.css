@@ -1,4 +1,5 @@
 /* styles.css */
+
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -44,10 +45,4 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #218838;
-}
-
-#results {
-    margin-top: 20px;
-}
+button:

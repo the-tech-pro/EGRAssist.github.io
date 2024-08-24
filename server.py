@@ -1,23 +1,25 @@
 # server.py
+
 from flask import Flask, request, jsonify
-import pandas as pd
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 @app.route('/api/suggestions', methods=['POST'])
 def get_suggestions():
-    data = request.json
-    track_length = data['trackLength']
-    battery_wattage = data['batteryWattage']
-    
-    # Placeholder for actual CSV data processing and AI logic
-    # Load your CSV data here if needed
-    # df = pd.read_csv('data.csv')
-    
-    # Example AI logic placeholder
-    suggestions = "Consider optimizing battery usage and aerodynamics to improve efficiency."
-    
-    return jsonify({'suggestions': suggestions})
+    try:
+        data = request.json
+        track_length = data['trackLength']
+        battery_wattage = data['batteryWattage']
+        
+        # Example AI logic placeholder
+        suggestions = "Consider optimizing battery usage and aerodynamics to improve efficiency."
+        
+        return jsonify({'suggestions': suggestions})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
