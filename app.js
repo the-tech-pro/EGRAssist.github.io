@@ -48,22 +48,13 @@ function calculate() {
 
     const motorWattage = 240; // Fixed motor wattage
     const totalBatteryWattage = battery1Wattage + battery2Wattage; // Total wattage of both batteries
+    const raceDurationHours = 100 / 60; // Convert 100 minutes to hours
 
-    // Calculate total energy consumed from the CSV data
-    let totalEnergyConsumed = 0;
-    if (csvData.length > 0) {
-        totalEnergyConsumed = csvData.reduce((sum, entry) => sum + (entry.consumption || 0), 0);
-    }
-
-    // Assuming the total energy is in watt-hours (Wh), adjust if the units differ
-    const raceDurationHours = trackLength / 10; // Assuming an average speed of 10 meters per minute
+    // Calculate total energy available from the batteries in watt-hours (Wh)
     const energyAvailableWh = totalBatteryWattage * raceDurationHours;
 
-    // Calculate the constant wattage for the motor
-    let constantWattage = 0;
-    if (energyAvailableWh > 0) {
-        constantWattage = energyAvailableWh / raceDurationHours;
-    }
+    // Calculate the constant wattage that can be maintained for the entire race duration
+    let constantWattage = energyAvailableWh / raceDurationHours;
 
     // Leave a buffer by reducing the wattage by 10% (or another percentage as needed)
     const bufferedWattage = constantWattage * 0.9;
@@ -73,8 +64,7 @@ function calculate() {
         <h2>Results:</h2>
         <p>Motor Wattage: ${motorWattage} W</p>
         <p>Total Battery Wattage: ${totalBatteryWattage.toFixed(2)} W</p>
-        <p>Total Energy Consumed (Watt-hours): ${totalEnergyConsumed.toFixed(2)}</p>
-        <p>Energy Available for Race (Watt-hours): ${energyAvailableWh.toFixed(2)}</p>
+        <p>Energy Available for Race (Watt-hours): ${energyAvailableWh.toFixed(2)} Wh</p>
         <p>Constant Wattage with Buffer: ${bufferedWattage.toFixed(2)} W</p>
         <p>Battery 1 Wattage: ${battery1Wattage.toFixed(2)} W</p>
         <p>Battery 2 Wattage: ${battery2Wattage.toFixed(2)} W</p>
