@@ -14,13 +14,19 @@
         <section>
             <h2>Input Data</h2>
             <form id="data-form">
+                <label for="csvFile">Upload CSV File:</label>
+                <input type="file" id="csvFile" accept=".csv" required>
+                
                 <label for="trackLength">Track Length (meters):</label>
                 <input type="number" id="trackLength" name="trackLength" step="0.1" required>
 
                 <label for="batteryWattage">Current Battery Wattage (W):</label>
                 <input type="number" id="batteryWattage" name="batteryWattage" step="0.1" required>
 
-                <!-- Add additional fields as needed -->
+                <label for="aiToggle">
+                    <input type="checkbox" id="aiToggle" checked>
+                    Enable AI Suggestions
+                </label>
                 
                 <button type="button" onclick="calculate()">Calculate</button>
             </form>

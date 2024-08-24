@@ -1,33 +1,69 @@
 // app.js
+document.getElementById('csvFile').addEventListener('change', handleFileSelect);
+
+let csvData = null;
+
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const text = e.target.result;
+        csvData = parseCSV(text);
+    };
+    reader.readAsText(file);
+}
+
+function parseCSV(text) {
+    const rows = text.split('\n').map(row => row.split(','));
+    const header = rows[0];
+    const data = rows.slice(1).map(row => {
+        const entry = {};
+        row.forEach((value, index) => {
+            entry[header[index]] = value;
+        });
+        return entry;
+    });
+    return data;
+}
+
 function calculate() {
     const trackLength = parseFloat(document.getElementById('trackLength').value);
     const batteryWattage = parseFloat(document.getElementById('batteryWattage').value);
+    const aiEnabled = document.getElementById('aiToggle').checked;
     
-    // Basic validation
     if (isNaN(trackLength) || isNaN(batteryWattage)) {
         alert('Please enter valid numbers.');
         return;
     }
 
-    // Example calculation logic (replace with real logic)
-    const motorWattage = trackLength * 0.1; // Simplified placeholder logic
+    if (!csvData) {
+        alert('Please upload a CSV file.');
+        return;
+    }
 
-    // Display calculation result
+    // Example calculation logic
+    const motorWattage = trackLength * 0.1;
+
+    // Display results
     let resultsHTML = `
         <h2>Results:</h2>
         <p>Required Motor Wattage: ${motorWattage.toFixed(2)} W</p>
         <p>Battery Wattage: ${batteryWattage.toFixed(2)} W</p>
     `;
 
-    // Mock AI suggestions (simulated response)
-    const mockSuggestions = "Consider optimizing battery usage and aerodynamics to improve efficiency.";
-
-    // Simulate a delay and mock response
-    setTimeout(() => {
-        resultsHTML += `
-            <h2>AI Suggestions:</h2>
-            <p>${mockSuggestions}</p>
-        `;
+    if (aiEnabled) {
+        // Mock AI suggestions (simulated response)
+        setTimeout(() => {
+            const mockSuggestions = "Consider optimizing battery usage and aerodynamics to improve efficiency.";
+            resultsHTML += `
+                <h2>AI Suggestions:</h2>
+                <p>${mockSuggestions}</p>
+            `;
+            document.getElementById('results').innerHTML = resultsHTML;
+        }, 1000);
+    } else {
         document.getElementById('results').innerHTML = resultsHTML;
-    }, 1000); // Simulate 1 second delay for fetching data
+    }
 }
