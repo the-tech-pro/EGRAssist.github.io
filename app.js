@@ -19,25 +19,15 @@ function calculate() {
         <p>Battery Wattage: ${batteryWattage.toFixed(2)} W</p>
     `;
 
-    // Fetch AI suggestions from backend
-    fetch('/api/suggestions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ trackLength, batteryWattage })
-    })
-    .then(response => response.json())
-    .then(data => {
+    // Mock AI suggestions (simulated response)
+    const mockSuggestions = "Consider optimizing battery usage and aerodynamics to improve efficiency.";
+
+    // Simulate a delay and mock response
+    setTimeout(() => {
         resultsHTML += `
             <h2>AI Suggestions:</h2>
-            <p>${data.suggestions}</p>
+            <p>${mockSuggestions}</p>
         `;
         document.getElementById('results').innerHTML = resultsHTML;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('results').innerHTML = `
-            <h2>Error:</h2>
-            <p>There was an error retrieving the suggestions.</p>
-        `;
-    });
+    }, 1000); // Simulate 1 second delay for fetching data
 }
