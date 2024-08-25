@@ -3,43 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Electric Race Car Challenge</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Car Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        p {
+            font-size: 1.2em;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        let lapCount = 0;
+        let lapTimes = [];
+        let speed = 0;
+        let batteryVoltage = 24.0;
+
+        function updateData() {
+            // Simulate speed and battery voltage changes
+            speed = (Math.random() * (40 - 20) + 20).toFixed(2);
+            batteryVoltage = (Math.random() * (24 - 22) + 22).toFixed(2);
+
+            document.getElementById('lap-count').innerText = lapCount;
+            document.getElementById('lap-times').innerText = lapTimes.join(', ');
+            document.getElementById('speed').innerText = speed + ' km/h';
+            document.getElementById('battery').innerText = batteryVoltage + ' V';
+        }
+
+        function recordLap() {
+            lapCount += 1;
+            const lapTime = (Math.random() * (120 - 60) + 60).toFixed(2); // Generate random lap time
+            lapTimes.push(lapTime);
+
+            document.getElementById('lap-count').innerText = lapCount;
+            document.getElementById('last-lap').innerText = lapTime + ' seconds';
+            updateData();
+        }
+
+        setInterval(updateData, 1000);  // Update data every second
+    </script>
 </head>
 <body>
-    <header>
-        <h1>Green Electric Race Car Challenge</h1>
-    </header>
-    <main>
-        <section>
-            <h2>Input Data</h2>
-            <form id="data-form">
-                <label for="csvFile">Upload CSV File:</label>
-                <input type="file" id="csvFile" accept=".csv" required>
-                
-                <label for="trackLength">Track Length (meters):</label>
-                <input type="number" id="trackLength" name="trackLength" step="0.1" required>
-
-                <label for="battery1Wattage">Battery 1 Wattage (W):</label>
-                <input type="number" id="battery1Wattage" name="battery1Wattage" step="0.1" required>
-
-                <label for="battery2Wattage">Battery 2 Wattage (W):</label>
-                <input type="number" id="battery2Wattage" name="battery2Wattage" step="0.1" required>
-
-                <label for="aiToggle">
-                    <input type="checkbox" id="aiToggle" checked>
-                    Enable AI Suggestions
-                </label>
-                
-                <button type="button" onclick="calculate()">Calculate</button>
-            </form>
-        </section>
-
-        <section id="results">
-            <!-- Results and suggestions will be displayed here -->
-        </section>
-    </main>
-    
-    <script src="app.js"></script>
+    <h1>Car Dashboard</h1>
+    <p>Lap Count: <span id="lap-count">0</span></p>
+    <p>Lap Times: <span id="lap-times"></span></p>
+    <p>Speed: <span id="speed">0 km/h</span></p>
+    <p>Battery Voltage: <span id="battery">24.0 V</span></p>
+    <p>Last Lap Time: <span id="last-lap">-</span></p>
+    <button onclick="recordLap()">Spoof Lap</button>
 </body>
 </html>
