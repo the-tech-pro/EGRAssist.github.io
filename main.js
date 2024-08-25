@@ -26,8 +26,15 @@ function openWindow(type, options = {}) {
     let title = document.createElement('h2');
     title.textContent = type === 'dashboard' ? 'Live Dashboard' :
                         type === 'lapTiming' ? 'Lap Timing' :
-                        type === 'dataAnalysis' ? 'Data Analysis' : 'Control Panel';
+                        type === 'dataAnalysis' ? 'Data Analysis' :
+                        type === 'controlWindow' ? 'Control Panel' : 'Speedhive';
     header.appendChild(title);
+
+    // Create fullscreen button
+    let fullscreenButton = document.createElement('button');
+    fullscreenButton.textContent = '⤢';
+    fullscreenButton.onclick = () => toggleFullscreen(windowDiv);
+    header.appendChild(fullscreenButton);
 
     let closeButton = document.createElement('button');
     closeButton.textContent = '×';
@@ -113,6 +120,15 @@ function openWindow(type, options = {}) {
         controlPanel.appendChild(stopButton);
         controlPanel.appendChild(lapButton);
         content.appendChild(controlPanel);
+    } else if (type === 'speedhive') {
+        let iframe = document.createElement('iframe');
+        iframe.src = 'https://speedhive.mylaps.com/organizations/497661';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        iframe.style.margin = '0';  // Remove any margin
+        iframe.style.padding = '0'; // Remove any padding
+        content.appendChild(iframe);
     }
 
     windowDiv.appendChild(content);
@@ -127,6 +143,18 @@ function setDefaultLayout() {
     openWindow('lapTiming', { top: '10px', left: '720px', width: '350px', height: '200px' });
     openWindow('controlWindow', { top: '220px', left: '720px', width: '350px', height: '200px' });
     openWindow('dataAnalysis', { top: '420px', left: '10px', width: '700px', height: '300px' });
+    openWindow('speedhive', { top: '420px', left: '720px', width: '350px', height: '300px' }); // Example position for Speedhive
+}
+
+// Function to toggle fullscreen mode for a window
+function toggleFullscreen(windowDiv) {
+    if (!document.fullscreenElement) {
+        windowDiv.requestFullscreen().catch(err => {
+            alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+        });
+    } else {
+        document.exitFullscreen();
+    }
 }
 
 // Function to create the live dashboard chart
