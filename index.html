@@ -2,15 +2,101 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telemetry Dashboard</title>
+    <title>Race Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="windows-container"></div>
+    <div class="container">
+        <!-- History Section (Data Analysis) -->
+        <div id="history" class="tile">
+            <h2>History</h2>
+            <div id="lapButtonsContainer"></div>
+        </div>
+
+        <!-- Debug & Alerts Section -->
+        <div id="debug" class="tile">
+            <h2>Debug & Alerts</h2>
+            <div id="debugLog"></div>
+        </div>
+
+        <!-- Live Dashboard Section -->
+        <div id="liveDashboard" class="tile">
+            <h2>Live Dashboard</h2>
+            <div class="chart-container">
+                <canvas id="liveChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Live Data Section -->
+        <div id="liveData" class="tile">
+            <h2>Live Data</h2>
+            <div class="live-data-grid">
+                <div class="live-data-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span id="throttle">0%</span>
+                    <p>Throttle Position</p>
+                </div>
+                <div class="live-data-item">
+                    <i class="fas fa-car"></i>
+                    <span id="brake">Inactive</span>
+                    <p>Brake Status</p>
+                </div>
+                <div class="live-data-item">
+                    <i class="fas fa-thermometer-half"></i>
+                    <span id="ambientTemp">0°C</span>
+                    <p>Ambient Temperature</p>
+                </div>
+                <div class="live-data-item">
+                    <i class="fas fa-fire"></i>
+                    <span id="motorTemp">0°C</span>
+                    <p>Motor Temperature</p>
+                </div>
+                <div class="live-data-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span id="wheelSpeed">0 mph</span>
+                    <p>Wheel Speed</p>
+                </div>
+                <div class="live-data-item">
+                    <i class="fas fa-cogs"></i>
+                    <span id="motorRPM">0</span>
+                    <p>Motor RPM</p>
+                </div>
+                <div class="live-data-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="gpsLongitude">0</span>
+                    <p>GPS Longitude</p>
+                </div>
+                <div class="live-data-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="gpsLatitude">0</span>
+                    <p>GPS Latitude</p>
+                </div>
+                <div class="live-data-item">
+                    <i class="fas fa-flag-checkered"></i>
+                    <span id="lapNumber">0</span>
+                    <p>Lap Number</p>
+                </div>
+                <div class="live-data-item">
+                    <i class="fas fa-road"></i>
+                    <span id="distance">0 miles</span>
+                    <p>Distance</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Panel Section -->
+        <div id="controlPanel" class="tile">
+            <h2>Control Panel</h2>
+            <button id="startButton" class="btn">Start</button>
+            <button id="stopButton" class="btn">Stop</button>
+            <button id="lapButton" class="btn">Lap</button>
+            <label><input type="checkbox" id="spoofData"> Spoof Data</label>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
