@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Dashboard</title>
+    <title>Car Dashboard with Graphs</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,18 +21,47 @@
             font-size: 1em;
             cursor: pointer;
         }
+        .chart-container {
+            width: 80%;
+            margin: auto;
+            padding-top: 20px;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         let lapCount = 0;
         let lapTimes = [];
         let speed = 0;
         let batteryVoltage = 24.0;
 
+        // Chart.js data arrays
+        let speedData = [];
+        let batteryData = [];
+        let labels = [];
+
         function updateData() {
             // Simulate speed and battery voltage changes
             speed = (Math.random() * (40 - 20) + 20).toFixed(2);
             batteryVoltage = (Math.random() * (24 - 22) + 22).toFixed(2);
 
+            // Update the labels and data for the charts
+            const currentTime = new Date().toLocaleTimeString();
+            labels.push(currentTime);
+            speedData.push(speed);
+            batteryData.push(batteryVoltage);
+
+            // Keep only the last 10 data points
+            if (labels.length > 10) {
+                labels.shift();
+                speedData.shift();
+                batteryData.shift();
+            }
+
+            // Update the charts
+            speedChart.update();
+            batteryChart.update();
+
+            // Update the dashboard display
             document.getElementById('lap-count').innerText = lapCount;
             document.getElementById('lap-times').innerText = lapTimes.join(', ');
             document.getElementById('speed').innerText = speed + ' km/h';
@@ -50,15 +79,71 @@
         }
 
         setInterval(updateData, 1000);  // Update data every second
+
+        // Initialize Chart.js charts
+        window.onload = function() {
+            const ctxSpeed = document.getElementById('speedChart').getContext('2d');
+            const ctxBattery = document.getElementById('batteryChart').getContext('2d');
+
+            window.speedChart = new Chart(ctxSpeed, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Speed (km/h)',
+                        data: speedData,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            window.batteryChart = new Chart(ctxBattery, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Battery Voltage (V)',
+                        data: batteryData,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        };
     </script>
 </head>
 <body>
-    <h1>Car Dashboard</h1>
+    <h1>Car Dashboard with Graphs</h1>
     <p>Lap Count: <span id="lap-count">0</span></p>
     <p>Lap Times: <span id="lap-times"></span></p>
     <p>Speed: <span id="speed">0 km/h</span></p>
     <p>Battery Voltage: <span id="battery">24.0 V</span></p>
     <p>Last Lap Time: <span id="last-lap">-</span></p>
     <button onclick="recordLap()">Spoof Lap</button>
+
+    <div class="chart-container">
+        <canvas id="speedChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="batteryChart"></canvas>
+    </div>
 </body>
 </html>
