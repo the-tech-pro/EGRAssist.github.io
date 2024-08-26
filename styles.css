@@ -1,204 +1,193 @@
-/* Reset and global styles */
+:root {
+    /* Light Mode Variables */
+    --background-color: #e4e5f1;
+    --text-color: #000000; /* Light mode text color */
+    --tile-background-color: #d2d3db;
+    --tile-border-color: #cccccc;
+    --button-background-color: #484B6A;
+    --button-hover-color: #565a80;
+    --debug-background-color: #d83c49;
+    --debug-text-color: #721c24;
+    --chart-line-color-1: #007bff;
+    --chart-fill-color-1: rgba(0, 123, 255, 0.2);
+    --chart-line-color-2: #dc3545;
+    --chart-fill-color-2: rgba(220, 53, 69, 0.2);
+}
+
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
     width: 100%;
     font-family: 'Arial', sans-serif;
-    background-color: #36393e; /* Background color for the whole page */
-    color: #5f86ad; /* Default text color for the body */
+    background-color: var(--background-color); /* Background color */
+    color: var(--text-color); /* Text color */
     box-sizing: border-box;
 }
 
-/* Main container grid layout */
 .container {
     display: grid;
-    grid-template-columns: 1fr 3fr; /* Two columns: 1fr for history and debug, 3fr for dashboard and data */
-    grid-template-rows: repeat(3, 1fr) 1fr; /* Four rows: three equal rows and one for control panel */
-    gap: 10px; /* Spacing between grid items */
-    height: 100vh; /* Full viewport height */
-    padding: 10px; /* Padding inside the container */
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: repeat(3, 1fr) 1fr;
+    gap: 10px;
+    height: 100vh;
+    padding: 10px;
     box-sizing: border-box;
 }
 
-/* General tile styles */
 .tile {
-    background-color: #424549; /* Background color for tiles */
-    border: 2px solid #B4BAC0; /* Border color and width for tiles */
-    border-radius: 10px; /* Rounded corners for tiles */
-    padding: 10px; /* Padding inside each tile */
+    background-color: var(--tile-background-color); /* Tile background color */
+    border: 2px solid var(--tile-border-color); /* Tile border color */
+    border-radius: 10px;
+    padding: 10px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Space out content vertically */
-    color: #FFFFFF; /* Default text color inside tiles */
+    justify-content: space-between;
+    color: var(--text-color); /* Text color inside tiles */
 }
 
-/* History section styles */
 #history {
-    grid-row: span 3; /* Spans the first three rows */
-    grid-column: 1 / 2; /* First column */
-    overflow-y: auto; /* Adds a scrollbar if content overflows vertically */
+    grid-row: span 3;
+    grid-column: 1 / 2;
+    overflow-y: auto; /* Scrollbar for history section */
 }
 
-/* Layout for lap buttons inside the history section */
 #lapButtonsContainer {
     display: flex;
     flex-direction: column;
-    gap: 5px; /* Spacing between lap buttons */
+    gap: 5px;
 }
 
-/* Lap button styles */
 #lapButtonsContainer button {
-    width: 100%; /* Full width of the container */
-    text-align: left; /* Align text to the left */
-    margin: 0; /* No margin */
-    color: #ffffff; /* Text color for lap buttons */
+    width: 100%;
+    text-align: left;
+    margin: 0;
 }
 
-/* Debug section styles */
 #debug {
-    grid-row: 4 / 5; /* Occupies the last row */
-    grid-column: 1 / 2; /* First column */
-    background-color: #ED4245; /* Background color for debug section */
-    border-color: #721c24; /* Border color for debug section */
-    color: #ffffff; /* Text color for debug section */
-    overflow-y: auto; /* Adds a scrollbar if content overflows vertically */
+    grid-row: 4 / 5;
+    grid-column: 1 / 2;
+    background-color: var(--debug-background-color); /* Debug background color */
+    border-color: var(--debug-text-color); /* Debug border color */
+    color: var(--debug-text-color); /* Debug text color */
+    overflow-y: auto; /* Scrollbar for debug section */
 }
 
-/* Live Dashboard section styles */
 #liveDashboard {
-    grid-row: span 2; /* Spans the first two rows */
-    grid-column: 2 / 3; /* Second column */
+    grid-row: span 2;
+    grid-column: 2 / 3;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevents content from overflowing */
+    overflow: hidden;
 }
 
-/* Chart container styles */
 .chart-container {
-    flex-grow: 1; /* Takes up remaining vertical space */
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Prevents the chart from overflowing */
+    overflow: hidden;
     position: relative;
-    color: #FFFFFF; /* Text color within the chart container */
+    color: var(--text-color); /* Text color within the chart container */
 }
 
-/* Ensures the chart fills the container */
 canvas {
-    width: 100% !important; /* Chart width matches container */
-    height: 100% !important; /* Chart height matches container */
+    width: 100% !important;
+    height: 100% !important;
 }
 
-/* Live Data section styles */
 #liveData {
-    grid-row: 3 / 4; /* Occupies the third row */
-    grid-column: 2 / 3; /* Second column */
+    grid-row: 3 / 4;
+    grid-column: 2 / 3;
     display: flex;
     align-items: center;
-    justify-content: space-around; /* Evenly spaces out data items */
+    justify-content: space-around;
 }
 
-/* Layout for live data items inside the live data section */
 .live-data-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Responsive grid layout */
-    grid-gap: 10px; /* Spacing between data items */
-    width: 100%; /* Full width of the container */
-    padding: 10px; /* Padding inside the grid */
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    grid-gap: 10px;
+    width: 100%;
+    padding: 10px;
 }
 
-/* Styles for individual live data items */
 .live-data-item {
-    background-color: #5865F2; /* Background color for live data items */
-    border-radius: 10px; /* Rounded corners */
-    text-align: center; /* Center-align text */
-    padding: 10px; /* Padding inside each item */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow effect */
-    color: #ffffff; /* Text color for live data items */
+    background-color: #f0f4ff;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Icon styles for live data items */
 .live-data-item i {
-    font-size: 1.5em; /* Larger icon size */
-    color: #ffffff; /* Icon color */
+    font-size: 1.5em;
+    color: var(--button-background-color);
 }
 
-/* Span element styles within live data items */
 .live-data-item span {
-    display: block; /* Block-level display */
-    font-size: 1.2em; /* Larger font size */
-    margin-top: 5px; /* Margin above the text */
-    font-weight: bold; /* Bold text */
+    display: block;
+    font-size: 1.2em;
+    margin-top: 5px;
+    font-weight: bold;
+    color: var(--text-color);
 }
 
-/* Paragraph styles within live data items */
 .live-data-item p {
-    margin: 0; /* No margin */
-    font-size: 0.9em; /* Smaller font size */
-    color: #ffffff; /* Lighter text color */
+    margin: 0;
+    font-size: 0.9em;
+    color: var(--text-color);
 }
 
-/* Control Panel section styles */
 #controlPanel {
-    grid-row: 4 / 5; /* Occupies the last row */
-    grid-column: 2 / 3; /* Second column */
-    color: #FFFFFF; /* Text color for control panel */
+    grid-row: 4 / 5;
+    grid-column: 2 / 3;
 }
 
-/* Heading styles */
 h2 {
-    margin: 0 0 10px 0; /* Margin below the heading */
-    font-size: 1.5em; /* Font size for headings */
-    color: #FFFFFF; /* Text color for headings */
+    margin: 0 0 10px 0;
+    font-size: 1.5em;
+    color: var(--text-color);
 }
 
-/* Unordered list styles (not used in the current code) */
 ul {
-    list-style-type: none; /* Removes bullet points */
-    padding: 0; /* Removes padding */
-    margin: 0; /* Removes margin */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
-/* Debug log styles */
 #debugLog {
-    flex-grow: 1; /* Takes up remaining vertical space */
-    padding: 10px; /* Padding inside the debug log */
-    background-color: #424549; /* Background color for debug log */
-    border-radius: 5px; /* Rounded corners */
-    color: #ffffff; /* Text color for debug log */
-    overflow-y: auto; /* Adds a scrollbar if content overflows vertically */
-    max-height: 100%; /* Limits the height of the log */
+    flex-grow: 1;
+    padding: 10px;
+    background-color: #d2d3db;
+    border-radius: 5px;
+    color: var(--debug-text-color);
+    overflow-y: auto; /* Scrollbar for debug log */
+    max-height: 100%;
 }
 
-/* Alert styles within the debug log */
 .debug-alert {
-    color: #ED4245; /* Red color for alerts */
+    color: #721c24;
 }
 
-/* Button styles */
 .btn {
-    padding: 10px 20px; /* Padding inside buttons */
-    font-size: 1em; /* Font size for buttons */
-    background-color: #5865F2; /* Button background color */
-    color: white; /* Button text color */
-    border: none; /* Removes border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    margin-bottom: 10px; /* Margin below the button */
-    transition: background-color 0.3s; /* Smooth background color transition */
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: var(--button-background-color); /* Button background color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
 }
 
-/* Hover state for buttons */
 .btn:hover {
-    background-color: #3C4270; /* Darker background on hover */
+    background-color: var(--button-hover-color); /* Button hover color */
 }
 
-/* Checkbox label styles */
 #spoofData {
-    margin-top: 10px; /* Margin above the checkbox label */
-    cursor: pointer; /* Pointer cursor on hover */
-    color: #B4BAC0; /* Text color for checkbox label */
+    margin-top: 10px;
+    cursor: pointer;
 }
