@@ -25,6 +25,7 @@ let liveChartData = {
 let lastWheelSpeed = 60; // Initial wheel speed
 let lastMotorRPM = 3000; // Initial motor RPM
 let chartNeedsUpdate = false; // Flag to indicate chart update
+let distance = 0; // Distance traveled in miles
 
 function startDashboard() {
     isRunning = true;
@@ -32,11 +33,16 @@ function startDashboard() {
     initializeChart();
     startSpoofing();
     requestAnimationFrame(updateChart);
+    document.getElementById('startButton').disabled = true;
+    document.getElementById('stopButton').disabled = false;
+    distance = 0;
 }
 
 function stopDashboard() {
     isRunning = false;
     logDebug('Dashboard stopped');
+    document.getElementById('startButton').disabled = false;
+    document.getElementById('stopButton').disabled = true;
 }
 
 function initializeChart() {
@@ -65,14 +71,32 @@ function initializeChart() {
 
 function updateLiveData() {
     const currentTime = new Date().toLocaleTimeString();
-    
+
     // Generate new data with small variations from the last data points
     lastWheelSpeed = Math.max(0, lastWheelSpeed + (Math.random() * 4 - 2)); // +/- 2 mph variation
     lastMotorRPM = Math.max(0, lastMotorRPM + (Math.random() * 200 - 100)); // +/- 100 RPM variation
+    distance += lastWheelSpeed / 3600; // convert mph to miles per second
+    const throttle = Math.random() * 100;
+    const brakeActive = Math.random() > 0.8;
+    const ambientTemp = 20 + Math.random() * 10;
+    const motorTemp = 60 + Math.random() * 20;
+    const gpsLongitude = -0.1 + Math.random() * 0.2;
+    const gpsLatitude = 51.5 + Math.random() * 0.2;
 
-    // Update the live data fields
-    document.getElementById('wheelSpeed').textContent = lastWheelSpeed.toFixed(1) + ' mph';
-    document.getElementById('motorRPM').textContent = lastMotorRPM.toFixed(0);
+    if (window.updateLiveDataState) {
+        window.updateLiveDataState({
+            wheelSpeed: `${lastWheelSpeed.toFixed(1)} mph`,
+            motorRPM: `${lastMotorRPM.toFixed(0)}`,
+            throttle: `${throttle.toFixed(0)}%`,
+            brake: brakeActive ? 'Active' : 'Inactive',
+            ambientTemp: `${ambientTemp.toFixed(1)}°C`,
+            motorTemp: `${motorTemp.toFixed(1)}°C`,
+            gpsLongitude: gpsLongitude.toFixed(5),
+            gpsLatitude: gpsLatitude.toFixed(5),
+            lapNumber: lapNumber.toString(),
+            distance: `${distance.toFixed(2)} miles`
+        });
+    }
 
     // Update the chart data
     liveChartData.labels.push(currentTime);
@@ -111,6 +135,9 @@ function recordLap() {
     lapNumber++;
     addLapButton(lapNumber);
     logDebug(`Lap ${lapNumber} recorded`);
+    if (window.updateLiveDataState) {
+        window.updateLiveDataState({ lapNumber: lapNumber.toString() });
+    }
 }
 
 function addLapButton(lapNumber) {
@@ -225,3 +252,6 @@ document.getElementById('startButton').onclick = startDashboard;
 document.getElementById('stopButton').onclick = stopDashboard;
 document.getElementById('lapButton').onclick = recordLap;
 document.getElementById('spoofData').onchange = startSpoofing;
+document.getElementById('darkModeToggle').onchange = (e) => {
+    document.body.classList.toggle('dark-mode', e.target.checked);
+};
