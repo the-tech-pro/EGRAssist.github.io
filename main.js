@@ -151,61 +151,52 @@ function addLapButton(lapNumber) {
 }
 
 function openLapWindow(lapNumber) {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const newWindow = window.open('', '', `width=${width},height=${height}`);
+    const overlay = document.getElementById('lapOverlay');
+    document.getElementById('lapTitle').textContent = `Lap ${lapNumber}`;
+    overlay.style.display = 'flex';
 
-    const lap = lapNumber;
+    const ctx = document.getElementById('lapChart').getContext('2d');
+    if (window.lapChart) {
+        window.lapChart.destroy();
+    }
 
-    newWindow.document.write(`
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Lap ${lapNumber}</title>
-            <link rel="stylesheet" href="styles.css">
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        </head>
-        <body>
-            <div class="lap-window">
-                <h1>Lap ${lapNumber}</h1>
-                <button onclick="window.close()">Close</button>
-                <div class="chart-container">
-                    <canvas id="lapChart"></canvas>
-                </div>
-            </div>
-            <script>
-                const ctx = document.getElementById('lapChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: ${JSON.stringify(liveChartData.labels)},
-                        datasets: ${JSON.stringify(liveChartData.datasets)}
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                ticks: {
-                                    maxRotation: 90,
-                                    minRotation: 90
-                                }
-                            },
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
+    const labels = [...liveChartData.labels];
+    const datasets = liveChartData.datasets.map(ds => ({
+        ...ds,
+        data: [...ds.data]
+    }));
+
+    window.lapChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels,
+            datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    ticks: {
+                        maxRotation: 90,
+                        minRotation: 90
                     }
-                });
-            </script>
-        </body>
-        </html>
-    `);
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
 
-    newWindow.document.close();
-    newWindow.focus();
+function closeLapOverlay() {
+    const overlay = document.getElementById('lapOverlay');
+    overlay.style.display = 'none';
+    if (window.lapChart) {
+        window.lapChart.destroy();
+        window.lapChart = null;
+    }
 }
 
 function logDebug(message, isAlert = false) {
@@ -255,3 +246,4 @@ document.getElementById('spoofData').onchange = startSpoofing;
 document.getElementById('darkModeToggle').onchange = (e) => {
     document.body.classList.toggle('dark-mode', e.target.checked);
 };
+document.getElementById('closeLapOverlay').onclick = closeLapOverlay;
