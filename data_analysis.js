@@ -1,6 +1,8 @@
+let analysisChart;
+
 function loadData() {
     const ctx = document.getElementById('analysisChart').getContext('2d');
-    const analysisChart = new Chart(ctx, {
+    analysisChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: ['Lap 1', 'Lap 2', 'Lap 3', 'Lap 4', 'Lap 5'],
@@ -36,3 +38,17 @@ function loadData() {
         }
     });
 }
+
+function adjustLayout() {
+    const container = document.querySelector('.container');
+    if (container) {
+        container.style.width = `${window.innerWidth}px`;
+        container.style.height = `${window.innerHeight}px`;
+    }
+    if (analysisChart) {
+        analysisChart.resize();
+    }
+}
+
+window.addEventListener('resize', adjustLayout);
+document.addEventListener('DOMContentLoaded', adjustLayout);

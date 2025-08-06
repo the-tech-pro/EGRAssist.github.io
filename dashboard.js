@@ -68,3 +68,17 @@ function updateLiveData() {
 
     liveChart.update();
 }
+
+function adjustLayout() {
+    const container = document.querySelector('.container');
+    if (container) {
+        container.style.width = `${window.innerWidth}px`;
+        container.style.height = `${window.innerHeight}px`;
+    }
+    if (liveChart) {
+        liveChart.resize();
+    }
+}
+
+window.addEventListener('resize', adjustLayout);
+document.addEventListener('DOMContentLoaded', adjustLayout);

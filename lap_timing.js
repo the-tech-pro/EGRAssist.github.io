@@ -21,3 +21,14 @@ function resetLap() {
     lapStartTime = null;
     document.getElementById('lapTimes').innerHTML = '';
 }
+
+function adjustLayout() {
+    const container = document.querySelector('.container');
+    if (container) {
+        container.style.width = `${window.innerWidth}px`;
+        container.style.height = `${window.innerHeight}px`;
+    }
+}
+
+window.addEventListener('resize', adjustLayout);
+document.addEventListener('DOMContentLoaded', adjustLayout);
